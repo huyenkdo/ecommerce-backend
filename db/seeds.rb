@@ -1,3 +1,5 @@
+require "open-uri"
+
 puts "Seeding products..."
 
 Product.destroy_all
