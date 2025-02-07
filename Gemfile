@@ -52,6 +52,7 @@ gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
 gem "dotenv-rails"
 gem "cloudinary"
+gem 'rack-cors'
 
 group :development, :test do
   gem "dotenv-rails"
