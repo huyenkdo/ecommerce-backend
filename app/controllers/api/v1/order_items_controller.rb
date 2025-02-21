@@ -12,6 +12,7 @@ class Api::V1::OrderItemsController < Api::V1::BaseController
       hash[:name] = k.name
       hash[:quantity] = v.size
       hash[:total_price] = v.size * k.price
+      hash[:product_id] = k.id
       array << hash
     end
   end
@@ -25,7 +26,7 @@ class Api::V1::OrderItemsController < Api::V1::BaseController
             end
     @order_item = OrderItem.new(product_id: product_id, order: order, quantity: 1)
     render_error unless @order_item.save
-    order.update(total_price: OrderItem.all.map { |item| item.quantity * item.product.price }.sum)
+    order.update(total_price: OrderItem.where(order: order).map { |item| item.quantity * item.product.price }.sum)
     redirect_to api_v1_cart_path
   end
 
