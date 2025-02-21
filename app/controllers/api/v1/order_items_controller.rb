@@ -24,8 +24,8 @@ class Api::V1::OrderItemsController < Api::V1::BaseController
             else
               Order.create(user: current_user, status: 'pending')
             end
-    @order_item = OrderItem.new(product_id: product_id, order: order, quantity: 1)
-    render_error unless @order_item.save
+    order_item = OrderItem.new(product_id: product_id, order: order, quantity: 1)
+    render_error unless order_item.save
     order.update(total_price: OrderItem.where(order: order).map { |item| item.quantity * item.product.price }.sum)
     redirect_to api_v1_cart_path
   end
