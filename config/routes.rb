@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :products, only: [:index, :show]
+      resources :order_items, only: [:create]
+      get "/cart", controller: "order_items", action: :cart
     end
   end
 end
