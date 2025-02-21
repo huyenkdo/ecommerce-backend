@@ -3,6 +3,8 @@ class Api::V1::OrderItemsController < Api::V1::BaseController
 
   def cart
     @current_order = Order.find_by(user: current_user, status: 'pending')
+    return unless @current_order.present?
+
     items = OrderItem.where(order: @current_order)
     @order_items = items.group_by(&:product).each_with_object([]) do |(k, v), array|
       hash = {}
@@ -24,7 +26,13 @@ class Api::V1::OrderItemsController < Api::V1::BaseController
     @order_item = OrderItem.new(product_id: product_id, order: order, quantity: 1)
     render_error unless @order_item.save
     order.update(total_price: OrderItem.all.map { |item| item.quantity * item.product.price }.sum)
-    render :cart
+    redirect_to api_v1_cart_path
+  end
+
+  def checkout
+    current_order = current_user.orders.where(status: 'pending').first
+    current_order.update(status: 'closed')
+    redirect_to api_v1_cart_path
   end
 
   private
