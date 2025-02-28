@@ -36,6 +36,14 @@ class Api::V1::OrderItemsController < Api::V1::BaseController
     redirect_to api_v1_cart_path
   end
 
+  def destroy
+    current_order = Order.find_by(user: current_user, status: 'pending')
+    order_item = OrderItem.find_by(order: current_order, product_id: params[:id])
+    order_item.destroy
+    current_order.update(total_price: OrderItem.where(order: current_order).map { |item| item.quantity * item.product.price }.sum)
+    redirect_to api_v1_cart_path, status: 303
+  end
+
   private
 
   def render_error

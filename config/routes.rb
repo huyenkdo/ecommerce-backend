@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :products, only: [:index, :show]
       resources :wishlists, only: [:index, :create, :destroy]
-      resources :order_items, only: [:create]
+      resources :order_items, only: [:create, :destroy]
       get "/cart", controller: "order_items", action: :cart
       post "/checkout", controller: "order_items", action: :checkout
     end
