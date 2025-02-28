@@ -13,4 +13,10 @@ class Api::V1::WishlistsController < Api::V1::BaseController
     end
     redirect_to api_v1_wishlists_path
   end
+
+  def destroy
+    wishlist = Wishlist.find_by(user: current_user, product_id: params[:id])
+    wishlist.destroy
+    redirect_to api_v1_wishlists_path, status: 303
+  end
 end
