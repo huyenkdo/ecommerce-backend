@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       resources :products, only: [:index, :show]
       resources :wishlists, only: [:index, :create, :destroy]
       resources :order_items, only: [:create, :destroy]
+      resources :orders, only: [:index]
       get "/cart", controller: "order_items", action: :cart
       post "/checkout", controller: "order_items", action: :checkout
     end
